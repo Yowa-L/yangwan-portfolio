@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yangwan - 新媒体艺术与交互设计作品集</title>
+    <meta name="description" content="Yangwan的交互设计作品集，专注于UI/UX设计、创意编程和3D交互体验。探索电商平台、品牌视觉系统、移动社交等创新项目。">
+    <meta name="keywords" content="交互设计,新媒体艺术,UI/UX,创意编程,作品集,Yangwan">
+    <meta name="author" content="Yangwan">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* 字体定义：改为 Space Grotesk */
+        .font-display { font-family: 'Space Grotesk', sans-serif; }
+        .font-sans { font-family: 'Inter', sans-serif; }
+        
+        /* 隐藏滚动条但允许滚动 */
+        ::-webkit-scrollbar { display: none; }
+        
+        /* 自定义光标 */
+        @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+            body { cursor: none; }
+            .custom-cursor {
+                position: fixed;
+                top: 0; left: 0;
+                width: 20px; height: 20px;
+                background-color: transparent;
+                border: 1.5px solid #ff8a00;
+                pointer-events: none;
+                z-index: 9999;
+                transform: translate(-50%, -50%);
+                transition: width 0.3s, height 0.3s, background-color 0.3s, border-color 0.3s;
+                mix-blend-mode: difference;
+            }
+            .custom-cursor.hovered {
+                width: 60px; height: 60px;
+                background-color: rgba(255, 138, 0, 0.8);
+                border-color: transparent;
+            }
+        }
+
+        /* 焦点可见性 */
+        a:focus-visible, button:focus-visible { outline: 2px solid #ff8a00; outline-offset: 4px; }
+
+        /* 滚动浮现动画 */
+        .reveal-up { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .reveal-up.is-visible { opacity: 1; transform: translateY(0); }
+        
+        /* Scroll 呼吸提示 */
+        @keyframes breathe { 0%, 100% { opacity: 0.2; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-8px); } }
+        .scroll-guide { animation: breathe 2s ease-in-out infinite; }
+        
+        /* 无边界直角卡片 */
+        .glass-card { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(12px); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 0; }
+        .glass-card:hover { transform: translateY(-8px); background: rgba(255, 255, 255, 0.05); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5); }
+        
+        /* 时间轴节点 */
+        .timeline-dot { transition: all 0.4s ease; border-radius: 0; }
+        .glass-card:hover ~ .timeline-dot { background: #ff8a00; box-shadow: 0 0 20px rgba(255, 138, 0, 0.8); transform: scale(1.5) rotate(45deg); }
+
+        /* 背景图片 */
+        #heroBg { position: absolute; inset: 0; z-index: 1; background-image: url('../IMAGES/background.jpg'); background-size: cover; background-position: center; opacity: 0.3; }
+
+        /* 导航高亮 */
+        .nav-link.active { color: #ff8a00; text-shadow: 0 0 10px rgba(255, 138, 0, 0.4); }
+
+        /* ================= 封面镂空字体特效 ================= */
+        .hollow-text {
+            color: transparent;
+            -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.3);
+        }
+
+        /* 中间链接线动画 */
+        .animate-line-flow {
+            position: absolute;
+            height: 100%;
+            width: 25vw; 
+            background: linear-gradient(90deg, transparent, rgba(255, 138, 0, 0.8), #ff8a00, transparent);
+            animation: lineFlow 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        @keyframes lineFlow { 0% { left: -25vw; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { left: 100vw; opacity: 0; } }
+
+        /* ================= 3D 横向模糊轮播图 ================= */
+        .perspective-1000 { perspective: 1200px; transform-style: preserve-3d; }
+        .carousel-item {
+            position: absolute; width: 300px; height: 180px; cursor: pointer; overflow: hidden; border-radius: 0; border: none;
+            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.8s ease;
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+            -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%); mask-composite: intersect;
+            -webkit-box-reflect: below -10px linear-gradient(transparent 60%, rgba(255,255,255,0.3));
+        }
+        .carousel-item::after { content: ''; position: absolute; inset: 0; box-shadow: inset 0 0 40px 15px #050505; pointer-events: none; }
+        @media (min-width: 768px) { .carousel-item { width: 500px; height: 300px; } }
+        .carousel-item img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.05); }
+        .carousel-item:not(.active) { filter: brightness(0.35) saturate(0.6); }
+        .carousel-item.active { filter: brightness(1.1) saturate(1.1); cursor: default; }
+    </style>
+</head>
+<body class="bg-[#050505] text-white font-sans antialiased overflow-x-hidden" id="top">
+
+    <div class="custom-cursor hidden md:block" id="cursor"></div>
+
+    <nav class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-8 md:px-12 py-4 backdrop-blur-md bg-black/40 transition-all duration-300 border-b border-white/5" id="navbar">
+        <div class="text-sm font-display font-bold tracking-[0.2em] uppercase">Yangwan's Portfolio</div>
+        <div class="hidden md:flex gap-12 text-xs font-light tracking-widest">
+            <a href="#about" class="nav-link hover-target hover:text-orange-400 transition-colors duration-300" lang="en">ABOUT</a>
+            <a href="#works" class="nav-link hover-target hover:text-orange-400 transition-colors duration-300" lang="en">WORKS</a>
+            <a href="#contact" class="nav-link hover-target hover:text-orange-400 transition-colors duration-300" lang="en">CONTACT</a>
+        </div>
+    </nav>
+
+    <section id="hero" class="cover-section relative overflow-hidden" style="height: 100vh;">
+        <div id="heroBg"></div>
+
+        <div class="absolute inset-0 z-20 flex flex-col pointer-events-none max-w-7xl mx-auto px-6 md:px-12">
+            
+            <div class="flex-1 flex flex-col justify-end pb-10">
+                <div class="reveal-up pointer-events-auto">
+                    <p class="text-5xl md:text-7xl font-display font-bold text-gray-400 tracking-widest mb-3">Hello, I'm</p>
+                    <p class="text-5xl md:text-7xl font-display font-bold text-white tracking-widest">Yangwan.</p>
+                </div>
+            </div>
+
+            <div class="relative w-full h-[1px] bg-white/10 pointer-events-none">
+                <div class="animate-line-flow"></div>
+            </div>
+
+            <div class="flex-1 flex flex-col justify-start pt-10">
+                <div class="self-end text-right reveal-up flex flex-col items-end pointer-events-auto" style="transition-delay: 0.2s;">
+                    <h1 class="text-6xl md:text-[8rem] font-display font-bold leading-[0.9] uppercase hollow-text">Crafting</h1>
+                    <h1 class="text-6xl md:text-[8rem] font-display font-bold leading-[0.9] uppercase hollow-text mr-0 md:mr-16">Illusions</h1>
+                    <h1 class="text-6xl md:text-[8rem] font-display font-bold leading-[0.9] uppercase hollow-text">Digital</h1>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="scroll-guide absolute bottom-12 left-8 md:left-12 z-20 flex flex-col items-center gap-4">
+            <span class="text-sm font-display font-bold tracking-[0.2em] uppercase mb-6">SCROLL</span>
+            <div class="w-px h-16 bg-white/30"></div>
+        </div>
+    </section>
+
+    <section id="about" class="px-6 md:px-12 py-32 max-w-7xl mx-auto relative z-10" style="min-height: 900px;">
+        <div id="main-content"></div>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-24 relative">
+
+            <div class="md:col-span-5 space-y-16 reveal-up pb-8 md:pb-0">
+                <div class="flex flex-col md:flex-row items-start md:items-center gap-10">
+                    <div class="w-32 h-32 md:w-48 md:h-48 overflow-hidden shrink-0 bg-white/5 rounded-none">
+                        <img src="../IMAGES/照片.JPG" alt="Avatar" loading="lazy" class="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700">
+                    </div>
+                    <div>
+                        <h2 class="text-5xl md:text-6xl font-display font-bold mb-4 tracking-wider">Yangwan</h2>
+                        <p class="text-orange-400 text-sm tracking-widest uppercase font-sans">Interaction Designer</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6 text-gray-400 text-sm leading-loose">
+                    <p>我是一名充满热情的设计师和开发者，专注于创造兼具美感与功能性的数字体验。我相信设计不仅是视觉的呈现，更是解决问题的艺术。</p>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-sans tracking-[0.2em] text-gray-500 mb-6 uppercase">Core Skills</h4>
+                    <div class="flex flex-wrap gap-3 font-display">
+                        <span class="hover-target px-6 py-3 bg-white/5 rounded-none text-xs hover:bg-orange-400 hover:text-black transition-colors duration-300">UI/UX Design</span>
+                        <span class="hover-target px-6 py-3 bg-white/5 rounded-none text-xs hover:bg-orange-400 hover:text-black transition-colors duration-300">Creative Coding</span>
+                        <span class="hover-target px-6 py-3 bg-white/5 rounded-none text-xs hover:bg-orange-400 hover:text-black transition-colors duration-300">3D Interaction</span>
+                        <span class="hover-target px-6 py-3 bg-white/5 rounded-none text-xs hover:bg-orange-400 hover:text-black transition-colors duration-300">Figma & Prototyping</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-7 relative pt-12 md:pt-0">
+                <div class="absolute left-[11px] top-0 bottom-0 w-[1px] bg-gradient-to-b from-white/20 via-white/5 to-transparent"></div>
+
+                <div class="space-y-16 pl-12 md:pl-20">
+                    <div class="relative group cursor-pointer hover-target reveal-up" style="transition-delay: 0.1s;">
+                        <div class="glass-card p-10 md:p-12 relative z-10">
+                            <span class="text-orange-400 text-xs tracking-widest mb-4 block font-sans">2023 - PRESENT</span>
+                            <h5 class="text-2xl font-display font-bold mt-1 mb-4 tracking-wide">高级交互设计师 @ 某某科技</h5>
+                            <p class="text-gray-400 text-sm leading-loose">主导核心产品的体验升级，优化用户决策路径，运用 WebGL 和高级动画提升品牌整体视觉调性，最终提升转化率 30%。</p>
+                        </div>
+                        <div class="timeline-dot absolute -left-[53px] md:-left-[85px] top-12 w-[3px] h-6 bg-white/30 z-20"></div>
+                    </div>
+
+                    <div class="relative group cursor-pointer hover-target reveal-up" style="transition-delay: 0.2s;">
+                        <div class="glass-card p-10 md:p-12 relative z-10">
+                            <span class="text-orange-400 text-xs tracking-widest mb-4 block font-sans">2021 - 2023</span>
+                            <h5 class="text-2xl font-display font-bold mt-1 mb-4 tracking-wide">全栈设计师 @ 创意工作室</h5>
+                            <p class="text-gray-400 text-sm leading-loose">从零到一打造跨平台社交类 App，负责从产品交互原型到前端页面结构搭建的完整闭环开发。</p>
+                        </div>
+                        <div class="timeline-dot absolute -left-[53px] md:-left-[85px] top-12 w-[3px] h-6 bg-white/30 z-20"></div>
+                    </div>
+
+                    <div class="relative group cursor-pointer hover-target reveal-up" style="transition-delay: 0.3s;">
+                        <div class="glass-card p-10 md:p-12 relative z-10">
+                            <span class="text-orange-400 text-xs tracking-widest mb-4 block font-sans">2019 - 2021</span>
+                            <h5 class="text-2xl font-display font-bold mt-1 mb-4 tracking-wide">视觉设计师 @ 品牌代理</h5>
+                            <p class="text-gray-400 text-sm leading-loose">为多家初创公司建立完整 VI 体系，包含 Logo 设计、排版规范以及营销落地页的视觉输出。</p>
+                        </div>
+                        <div class="timeline-dot absolute -left-[53px] md:-left-[85px] top-12 w-[3px] h-6 bg-white/30 z-20"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="works" class="w-full relative overflow-hidden flex flex-col justify-center items-center z-10 bg-black/20" style="min-height: 100vh;">
+        
+        <div class="flex flex-col items-center w-full max-w-7xl mx-auto px-6 md:px-12">
+            
+            <div class="relative w-full h-[300px] md:h-[400px] flex justify-center items-center perspective-1000" id="3d-carousel">
+                </div>
+
+            <div class="mt-8 md:mt-12 flex flex-col items-center text-center max-w-2xl z-20" id="work-info">
+                <h3 id="work-title" class="text-2xl md:text-3xl font-display font-bold mb-6 text-white transition-opacity duration-500 tracking-wide"></h3>
+                <p id="work-desc" class="text-gray-400 text-sm leading-loose mb-10 transition-opacity duration-500"></p>
+                
+                <a id="work-link" href="#" class="hover-target inline-flex items-center justify-center bg-white/10 text-white hover:bg-orange-500 hover:text-black px-12 py-4 rounded-none transition-all duration-500 text-xs tracking-[0.2em] uppercase font-display font-bold">
+                    View Project
+                </a>
+            </div>
+            
+        </div>
+    </section>
+
+    <section id="contact" class="px-6 py-32 flex items-center justify-center relative z-10" style="height: 100vh;">
+        <div class="max-w-3xl w-full text-center relative z-10 reveal-up">
+            <h2 class="text-6xl md:text-8xl font-display font-bold mb-8 tracking-tighter" lang="en">Let's create <br><span class="text-orange-400">together.</span></h2>
+            <p class="text-gray-400 text-base md:text-lg mb-20 leading-loose tracking-wide">随时期待与您交流新的创意想法或合作机会。</p>
+
+            <div class="flex flex-col md:flex-row justify-center items-center gap-10 md:gap-20 text-sm font-light tracking-[0.2em]">
+                <a href="mailto:hello@yangwan.design" class="hover-target hover:text-orange-400 transition-colors flex items-center gap-4 font-display font-bold" lang="en">
+                    <span class="w-12 h-[1px] bg-white/40"></span> hello@yangwan.design
+                </a>
+                <a href="tel:+8613800138000" class="hover-target hover:text-orange-400 transition-colors font-display font-bold" lang="en">+86 138 0013 8000</a>
+            </div>
+        </div>
+    </section>
+
+    <button id="backToTop" class="hover-target fixed bottom-8 right-8 md:bottom-12 md:right-12 z-50 w-14 h-14 rounded-none bg-white/5 backdrop-blur-md text-white flex items-center justify-center opacity-0 translate-y-8 pointer-events-none transition-all duration-500 hover:bg-orange-500 hover:text-black focus:outline-none group" aria-label="返回顶部">
+        <svg class="w-6 h-6 transition-transform duration-500 group-hover:-translate-y-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+    </button>
+
+    <script>
+        // 自定义光标
+        const cursor = document.getElementById('cursor');
+        const hoverTargets = document.querySelectorAll('.hover-target, a, button');
+        if(cursor && window.matchMedia("(pointer: fine)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                requestAnimationFrame(() => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
+            });
+            hoverTargets.forEach(target => {
+                target.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+                target.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+            });
+        }
+
+        // 滚动浮现
+        const revealElements = document.querySelectorAll('.reveal-up');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) { entry.target.classList.add('is-visible'); revealObserver.unobserve(entry.target); }
+            });
+        }, { threshold: 0.15 });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // 导航栏联动
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const scrollSpyObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
+                    if (activeLink) activeLink.classList.add('active');
+                }
+            });
+        }, { root: null, rootMargin: '-20% 0px -60% 0px', threshold: 0 });
+        sections.forEach(section => scrollSpyObserver.observe(section));
+
+        // 返回顶部
+        const backToTopBtn = document.getElementById('backToTop');
+        const heroSection = document.getElementById('hero');
+        window.addEventListener('scroll', () => {
+            const showThreshold = heroSection ? heroSection.offsetHeight / 2 : 500;
+            if (window.scrollY > showThreshold) {
+                backToTopBtn.classList.remove('opacity-0', 'translate-y-8', 'pointer-events-none');
+                backToTopBtn.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+            } else {
+                backToTopBtn.classList.add('opacity-0', 'translate-y-8', 'pointer-events-none');
+                backToTopBtn.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+            }
+        });
+
+        // 3D 轮播
+        const works = [
+            { title: '数据编织：数据可视化的艺术', desc: '将海量数据转化为可视的丝线与结构，探索信息的流变与涌现。现代化数据展示体验，运用高级动画提升视觉调性。', img: 'https://images.unsplash.com/photo-1549497538-303791108f94?w=600&auto=format&fit=crop', link: 'work1.html' },
+            { title: '品牌视觉系统', desc: '为初创科技公司打造的完整品牌 VI 设计，包含 Logo 演化、色彩规范、排版系统及全套办公物料的实地应用。', img: 'https://images.unsplash.com/photo-1549887552-cb1071d3e5ca?w=600&auto=format&fit=crop', link: 'work2.html' },
+            { title: '移动社交探索', desc: '从零到一构建的跨平台移动社交 App，采用新颖的卡片式滑动交互逻辑，实现流畅的跨平台浏览体验。', img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop', link: 'work3.html' },
+            { title: '加密艺术画廊', desc: '探索 Web3 时代的去中心化艺术画廊，结合智能合约与 3D 沉浸式网页浏览体验，打破物理空间的界限。', img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop', link: 'work4.html' },
+            { title: '金融数据看板', desc: '将复杂的实时金融数据转化为直观、极简的交互图表，通过暗色模式降低视觉疲劳，帮助分析师快速捕捉市场异动。', img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format&fit=crop', link: 'work5.html' }
+        ];
+
+        const carouselContainer = document.getElementById('3d-carousel');
+        const workTitle = document.getElementById('work-title');
+        const workDesc = document.getElementById('work-desc');
+        const workLink = document.getElementById('work-link');
+        let currentIndex = 2; 
+
+        works.forEach((work, index) => {
+            const card = document.createElement('div');
+            card.className = 'carousel-item hover-target';
+            card.innerHTML = `<img src="${work.img}" alt="${work.title}">`;
+            card.addEventListener('click', () => { if(currentIndex !== index) { currentIndex = index; updateCarousel(); }});
+            carouselContainer.appendChild(card);
+        });
+
+        const cards = document.querySelectorAll('.carousel-item');
+
+        function updateCarousel() {
+            const isMobile = window.innerWidth < 768;
+            cards.forEach((card, index) => {
+                const offset = index - currentIndex; 
+                const absOffset = Math.abs(offset);
+                let translateX = 0, translateZ = 0, rotateY = 0, zIndex = 10 - absOffset, scale = 1;
+
+                if (offset === 0) {
+                    translateX = 0; translateZ = 200; rotateY = 0; scale = 1;
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                    const direction = offset > 0 ? 1 : -1; 
+                    const baseTranslateX = isMobile ? 150 : 280;
+                    const stepTranslateX = isMobile ? 60 : 120;
+                    translateX = direction * (baseTranslateX + (absOffset - 1) * stepTranslateX); 
+                    translateZ = 50 - (absOffset * 30); 
+                    rotateY = direction * -35; 
+                    scale = 0.85;
+                }
+                card.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
+                card.style.zIndex = zIndex;
+            });
+
+            workTitle.style.opacity = 0; workDesc.style.opacity = 0;
+            setTimeout(() => {
+                workTitle.innerText = works[currentIndex].title; 
+                workDesc.innerText = works[currentIndex].desc;
+                workLink.href = works[currentIndex].link;
+                workTitle.style.opacity = 1; workDesc.style.opacity = 1;
+            }, 400); 
+        }
+
+        updateCarousel();
+        window.addEventListener('resize', updateCarousel);
+
+        // 返回顶部按钮点击事件
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

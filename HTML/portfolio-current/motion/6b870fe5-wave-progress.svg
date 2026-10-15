@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 120" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="played-wave" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#70d7ee" stop-opacity=".9"/>
+      <stop offset=".1" stop-color="#758fdf" stop-opacity=".96"/>
+      <stop offset=".2" stop-color="#9c7bdd" stop-opacity=".97"/>
+      <stop offset=".28" stop-color="#edb4d8" stop-opacity=".92"/>
+      <stop offset=".44" stop-color="#a394e5" stop-opacity=".94"/>
+      <stop offset=".61" stop-color="#72cee9" stop-opacity=".9"/>
+      <stop offset=".77" stop-color="#9a79d8" stop-opacity=".96"/>
+      <stop offset=".9" stop-color="#ebb2d6" stop-opacity=".92"/>
+      <stop offset="1" stop-color="#9d90e4" stop-opacity=".9"/>
+    </linearGradient>
+    <path id="upper" d="M0 60 C19 59 30 55 44 58 C59 61 70 47 84 49 C99 51 108 65 122 57 C138 48 147 25 162 29 C177 33 183 74 199 59 C215 44 226 51 241 55 C257 59 267 18 283 20 C300 22 306 84 323 62 C340 40 351 46 368 54 C384 61 396 36 411 40 C427 44 437 70 453 58 C469 45 480 12 496 15 C513 18 520 88 536 63 C552 38 565 28 581 37 C597 46 607 76 623 59 C639 42 651 50 667 55 C683 60 695 24 711 27 C727 30 736 78 752 61 C768 43 781 34 797 42 C813 50 823 68 839 58 C855 48 866 31 882 35 C898 39 907 73 923 60 C940 47 950 51 966 56 C981 60 991 59 1000 60 L1000 60 L0 60 Z"/>
+  </defs>
+  <use href="#upper" fill="url(#played-wave)"/>
+  <use href="#upper" fill="url(#played-wave)" opacity=".84" transform="translate(0 120) scale(1 -1)"/>
+</svg>

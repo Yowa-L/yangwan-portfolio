@@ -7,7 +7,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const source = path.resolve(root, '../portfolio-hub/dist');
 const target = path.join(root, 'HTML', 'portfolio-current');
 const legacy = path.join(root, 'HTML');
-const files = ['index.html', 'styles.css', 'app.js', 'motion.js', 'covers', 'pages', 'media', 'motion'];
+const files = ['index.html', 'styles.css', 'app.js', 'motion.js', 'fonts', 'covers', 'pages', 'media', 'motion'];
 
 function digest(directory) {
   const hashes = {};

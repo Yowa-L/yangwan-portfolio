@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("fonts/space-grotesk-700.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   color-scheme: light;
   --paper: #f3f0e9;
@@ -37,8 +45,10 @@ img { display: block; max-width: 100%; }
 
 .cover-copy { position: relative; z-index: 2; grid-column: 1 / span 8; align-self: center; padding-bottom: 4vh; }
 .eyebrow { margin: 0 0 28px; font-size: 13px; letter-spacing: .18em; font-weight: 650; }
-.cover h1 { margin: 0; font-size: clamp(72px, 8.25vw, 158px); font-weight: 500; line-height: .93; letter-spacing: -.075em; }
-.cover h1 em { font-family: Georgia, "Songti SC", serif; font-weight: 400; }
+.cover h1 { margin: 0; width: max-content; max-width: 100%; font-family: "Space Grotesk", sans-serif; font-size: clamp(64px, 7vw, 134px); font-weight: 700; line-height: .9; letter-spacing: 0; text-transform: uppercase; text-align: right; color: transparent; -webkit-text-stroke: 1.5px rgba(23, 23, 20, .68); }
+.cover h1 span { display: block; }
+.cover h1 span:nth-child(2) { margin-right: .5em; }
+@media (forced-colors: active) { .cover h1 { color: CanvasText; -webkit-text-stroke: 0; } }
 .cover-intro { margin: 52px 0 0 8px; font-size: clamp(18px, 1.25vw, 24px); line-height: 1.65; color: #5e5b55; }
 .cover-index { position: relative; z-index: 2; grid-column: 10 / -1; align-self: center; justify-self: stretch; display: grid; grid-template-columns: auto 1fr; gap: 5px 18px; align-items: baseline; padding: 28px 0; border-block: 1px solid var(--line); }
 .cover-index strong { font-size: clamp(76px, 7vw, 132px); line-height: .9; font-weight: 400; letter-spacing: -.08em; }
@@ -163,7 +173,7 @@ body.media-open { overflow:hidden; }
   .cover { padding:26px 24px 34px; }
   .masthead-meta { display:none; }
   .cover-copy { grid-column:1 / -1; }
-  .cover h1 { font-size:clamp(58px,17vw,104px); }
+  .cover h1 { font-size:clamp(40px,12.3vw,104px); }
   .cover-index { grid-column:7 / -1; align-self:end; margin-bottom:28px; }
   .projects { padding:64px 24px 34px; }
   .projects-header { grid-template-columns:1fr; }

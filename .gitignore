@@ -1,0 +1,20 @@
+# Legacy website: keep on this computer, do not include in new releases.
+/HTML/index.html
+/HTML/tailwind.js
+/HTML/work1.html
+/HTML/work1.png
+/HTML/work2.html
+/HTML/work2.png
+/HTML/work3.html
+/HTML/work3.png
+/HTML/work4.html
+/HTML/work4.png
+/HTML/work5.html
+/HTML/work5.png
+/HTML/头像.jpg
+/Figma_Design_Spec.md
+
+# Local tooling and OS metadata.
+.DS_Store
+.claude/
+.vercel/
